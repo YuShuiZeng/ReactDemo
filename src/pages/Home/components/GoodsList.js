@@ -108,6 +108,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius: 10,
         paddingVertical: 10,
+        paddingHorizontal: 10,
+        marginBottom: 10,
+        backgroundColor: '#fff',
     },
     cardName: {
         // paddingVertical: 10,

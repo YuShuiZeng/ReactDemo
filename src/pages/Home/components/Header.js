@@ -9,6 +9,7 @@ import {
     View,
     Text,
 } from 'react-native';
+import StickyHeader from '~components/topBar';
 
 class Header extends React.Component {
     constructor(props) {
@@ -36,17 +37,22 @@ class Header extends React.Component {
                             'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
                         }}/>
                 </View>
-                <SearchBar
-                    placeholder="Type Here..."
-                    round
-                    lightTheme
-                    placeholderTextColor="#fff"
-                    searchIcon={styles.searchLStyle}
-                    containerStyle={styles.searchCStyle}
-                    inputContainerStyle={styles.searchIStyle}
-                    inputStyle={styles.searchTStyle}
-                    onChangeText={this.updateSearch}
-                    value={this.state.search}/>
+                <StickyHeader
+                    stickyHeaderY={this.state.headHeight} // 把头部高度传入
+                    stickyScrollY={this.state.scrollY}  // 把滑动距离传入
+                    >
+                    <SearchBar
+                        placeholder="Type Here..."
+                        round
+                        lightTheme
+                        placeholderTextColor="#fff"
+                        searchIcon={styles.searchLStyle}
+                        containerStyle={styles.searchCStyle}
+                        inputContainerStyle={styles.searchIStyle}
+                        inputStyle={styles.searchTStyle}
+                        onChangeText={this.updateSearch}
+                        value={this.state.search}/>
+                </StickyHeader>
                 <View style={styles.navBar}>
                     <View style={styles.navBarItem}><Icon name='twitter' size={30} color="#000"/></View>
                     <View style={styles.navBarItem}><Icon name='youko' size={30} color="#000"/></View>

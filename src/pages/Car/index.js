@@ -109,7 +109,7 @@ class Car extends React.Component {
             </View>
             {   
                 item.subList.map((l, i) => (
-                <View style={styles.carList}>
+                <View style={styles.carList} key={i}>
                     <CheckBox
                         checked={l.checked}
                         checkedColor="#000"
@@ -149,17 +149,27 @@ class Car extends React.Component {
     )
     render() {
         return (
-            <View>
+            <View style={styles.carContain}>
                 <Text style={styles.pageTitle}>购物车</Text>
                 <FlatList
                     keyExtractor={this.keyExtractor}
                     data={this.state.list}
                     renderItem={this.renderItem}/>
+                <View style={styles.bottomBtn}>
+                    <View style={styles.totalBox}>
+                        <Text style={styles.totalText}>合计金额：</Text>
+                        <Text style={styles.totalPrice}>￥666.00</Text>
+                    </View>
+                    <Text style={styles.buyBtn}>结算（22）</Text>
+                </View>
             </View>
         );
     }
 }
 const styles = StyleSheet.create({
+    carContain: {
+        flex: 1,
+    },
     pageTitle: {
         fontSize: 18,
         fontWeight: 'bold',
@@ -238,6 +248,36 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         borderRadius: 4,
     },
+    bottomBtn: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        position: 'absolute',
+        bottom: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        justifyContent: 'space-between',
+    },
+    totalBox: {
+        flex: 1,
+    },
+    totalText: {
+        fontSize: 14,
+        color: '#333',
+        fontWeight: 'bold',
+    },
+    totalPrice: {
+        fontSize: 18,
+        color: 'red',
+        fontWeight: 'bold',
+    },
+    buyBtn: {
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        backgroundColor: 'red',
+        color: '#fff',
+    }
 })
 
 export default Car;
