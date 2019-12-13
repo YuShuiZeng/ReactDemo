@@ -8,7 +8,7 @@ import {
 import { ListItem, Avatar, Badge } from 'react-native-elements'
   
 
-class Message extends React.Component {
+class GoodsDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -29,7 +29,7 @@ class Message extends React.Component {
         }
     }
     static navigationOptions = {
-        title: '消息',
+        title: '商品详情',
     };
     keyExtractor = (item, index) => index.toString()
 
@@ -65,7 +65,7 @@ class Message extends React.Component {
     )
     render() {
         return (
-          <View>
+          <View >
             <Text style={styles.pageTitle}>消息</Text>
             <FlatList
                 keyExtractor={this.keyExtractor}
@@ -117,4 +117,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Message;
+export default GoodsDetails;

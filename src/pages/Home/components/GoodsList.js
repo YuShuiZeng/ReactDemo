@@ -2,7 +2,7 @@ import React from 'react';
 import {
     StyleSheet,
     View,
-    ScrollView,
+    TouchableOpacity,
     ActivityIndicator,
   } from 'react-native';
 
@@ -56,7 +56,6 @@ class GoodsList extends React.Component {
             ]
         }
     }
-    
     render() {
         return (
             <>
@@ -68,23 +67,30 @@ class GoodsList extends React.Component {
                     {
                         this.state.goodsList.map(item => {
                             return (
-                                <View key={item.goodsId} style={styles.card}>
-                                    <View style={styles.imgBox}>
-                                        <Image source={{ uri: item.goodsImage }}
-                                            PlaceholderContent={<ActivityIndicator />}
-                                            style={styles.cardImg}/>
-                                    </View>
-                                    <View style={styles.goodsInfo}>
-                                        <Text style={styles.cardName} numberOfLines={2}>{item.goodsName}</Text>
-                                        <View style={styles.cardBottom}>
-                                            <View style={styles.cardPrice}>
-                                                <Text style={styles.oldPrice}>￥{item.goodsOldPrice}</Text>
-                                                <Text style={styles.newPrice}>￥{item.goodsNewPrice}</Text>
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    key={item.goodsId}
+                                    onPress={() => {
+                                        this.props.goDetail(1)
+                                    }}>
+                                    <View  style={styles.card}>
+                                        <View style={styles.imgBox}>
+                                            <Image source={{ uri: item.goodsImage }}
+                                                PlaceholderContent={<ActivityIndicator />}
+                                                style={styles.cardImg}/>
+                                        </View>
+                                        <View style={styles.goodsInfo}>
+                                            <Text style={styles.cardName} numberOfLines={2}>{item.goodsName}</Text>
+                                            <View style={styles.cardBottom}>
+                                                <View style={styles.cardPrice}>
+                                                    <Text style={styles.oldPrice}>￥{item.goodsOldPrice}</Text>
+                                                    <Text style={styles.newPrice}>￥{item.goodsNewPrice}</Text>
+                                                </View>
+                                                <Text style={styles.cardBtn}>立即购买</Text>
                                             </View>
-                                            <Text style={styles.cardBtn}>立即购买</Text>
                                         </View>
                                     </View>
-                                </View>
+                                </TouchableOpacity>
                             )
                         })
                     }

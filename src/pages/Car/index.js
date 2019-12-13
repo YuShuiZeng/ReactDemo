@@ -13,53 +13,23 @@ class Car extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            allChecked: false,
             list: [
                 {
-                    title: '保税仓',
-                    storeId: '88',
+                    goodsId: '1',
+                    goodsName: 'EURO DB几何个性镭射百搭女士包包',
+                    goodsImage: 'https://image.sudian178.com/sd/goodsRealImg/20191205161734161169.jpg',
+                    goodsOldPrice: 332.00,
+                    goodsNewPrice: 33.00,
                     checked: false,
-                    subList: [
-                        {
-                            goodsId: '1',
-                            goodsName: 'EURO DB几何个性镭射百搭女士包包',
-                            goodsImage: 'https://image.sudian178.com/sd/goodsRealImg/20191205161734161169.jpg',
-                            goodsOldPrice: 332.00,
-                            goodsNewPrice: 33.00,
-                            checked: false,
-                        },
-                        {
-                            goodsId: '2',
-                            goodsName: 'EURO DB几何个性镭射百搭女士包包',
-                            goodsImage: 'https://image.sudian178.com/sd/goodsRealImg/20191205161734161169.jpg',
-                            goodsOldPrice: 332.00,
-                            goodsNewPrice: 33.00,
-                            checked: true,
-                        },
-                        {
-                            goodsId: '3',
-                            goodsName: 'EURO DB几何个性镭射百搭女士包包',
-                            goodsImage: 'https://image.sudian178.com/sd/goodsRealImg/20191205161734161169.jpg',
-                            goodsOldPrice: 332.00,
-                            goodsNewPrice: 33.00,
-                            checked: false,
-                        },
-                        {
-                            goodsId: '4',
-                            goodsName: 'EURO DB几何个性镭射百搭女士包包',
-                            goodsImage: 'https://image.sudian178.com/sd/goodsRealImg/20191205161734161169.jpg',
-                            goodsOldPrice: 332.00,
-                            goodsNewPrice: 33.00,
-                            checked: false,
-                        },
-                        {
-                            goodsId: '5',
-                            goodsName: 'EURO DB几何个性镭射百搭女士包包',
-                            goodsImage: 'https://image.sudian178.com/sd/goodsRealImg/20191205161734161169.jpg',
-                            goodsOldPrice: 332.00,
-                            goodsNewPrice: 33.00,
-                            checked: false,
-                        },
-                    ]
+                },
+                {
+                    goodsId: '2',
+                    goodsName: 'EURO DB几何个性镭射百搭女士包包',
+                    goodsImage: 'https://image.sudian178.com/sd/goodsRealImg/20191205161734161169.jpg',
+                    goodsOldPrice: 332.00,
+                    goodsNewPrice: 33.00,
+                    checked: true,
                 },
             ]
         }
@@ -68,86 +38,83 @@ class Car extends React.Component {
         title: '购物车',
     };
     onPress = () => {}
-    checkItem = (s_id, g_id) => {
-        const i = this.state.list.findIndex(el => el.storeId === s_id)
+    checkItem = (g_id) => {
+        const i = this.state.list.findIndex(el => el.goodsId === g_id)
         if (i >= 0) {
-            const j = this.state.list[i].subList.findIndex(el => el.goodsId === g_id)
-            if (j >= 0) {
-                this.state.list[i].subList[j].checked = !this.state.list[i].subList[j].checked
-                const allCheck = this.state.list[i].subList.some(el => !el.checked)
-                this.state.list[i].checked = !allCheck
-                this.setState({
-                    list: [...this.state.list]
-                })
-            }
+            this.state.list[i].checked = !this.state.list[i].checked
+            const allCheck = this.state.list.some(el => !el.checked)
+            // this.state.list[i].checked = !allCheck
+            this.setState({
+                allChecked: !allCheck,
+                list: [...this.state.list]
+            })
         }
     }
-    checkStore = (check, s_id) => {
-        const i = this.state.list.findIndex(el => el.storeId === s_id)
-        this.state.list[i].checked = !check
-        this.state.list[i].subList.map(el => {
+    checkStore = (check) => {
+        this.state.list.map(el => {
             el.checked = !check
             return el
         })
         this.setState({
+            allChecked: !check,
             list: [...this.state.list]
         })
     }
+    totalPrice = () => {
+        let sum = 0
+        this.state.list.forEach(cur => {
+            if (cur.checked) {
+                sum += cur.goodsNewPrice
+            }
+        })
+        return sum
+    }
+
     keyExtractor = (item, index) => index.toString()
 
     renderItem = ({ item }) => (
-        <View
-            key={item.storeId}
-            style={styles.carBox}>
-            <View style={styles.storeName}>
-                <CheckBox
-                    checkedColor="#000"
-                    checked={item.checked}
-                    onIconPress={() => this.checkStore(item.checked, item.storeId)}
-                    containerStyle={styles.checkC}/>
-                <Text style={styles.sectionTitle}>{item.title}</Text>
-            </View>
-            {   
-                item.subList.map((l, i) => (
-                <View style={styles.carList} key={i}>
-                    <CheckBox
-                        checked={l.checked}
-                        checkedColor="#000"
-                        onIconPress={() => this.checkItem(item.storeId, l.goodsId)}
-                        containerStyle={styles.checkC}/>
-                    <View style={styles.goodInfo}>
-                        <View style={styles.imageView}>
-                            <Image
-                            source={{ uri: l.goodsImage }}
-                            style={styles.image}
-                            PlaceholderContent={<ActivityIndicator />}/>
-                        </View>
-                        <View style={styles.goodInfoText}>
-                            <View style={styles.goodNameBox}>
-                                <Text style={styles.goodName} numberOfLines={2}>{l.goodsName}</Text>
-                                <Icon name='delete' size={20} color="#ccc"/>
-                            </View>
-                            <Text style={styles.oldPrice}>￥{l.goodsOldPrice}</Text>
-                            <View style={styles.priceNum}>
-                                <Text style={styles.newPrice}>￥{l.goodsNewPrice}</Text>
-                                <View style={styles.goodNumChange}>
-                                <TouchableOpacity style={styles.button} onPress={this.onPress}>
-                                    <Icon name='minus' size={12} color="#fff"/>
-                                </TouchableOpacity>
-                                <Text style={styles.goodNum}>0</Text>
-                                <TouchableOpacity style={styles.button} onPress={this.onPress}>
-                                    <Icon name='plus' size={12} color="#fff"/>
-                                </TouchableOpacity>
-                                </View>
-                            </View>
+        <View style={styles.carList} key={item.goodsId}>
+            <CheckBox
+                checked={item.checked}
+                checkedColor="#000"
+                onIconPress={() => this.checkItem(item.goodsId)}
+                containerStyle={styles.checkC}/>
+            <View style={styles.goodInfo}>
+                <View style={styles.imageView}>
+                    <Image
+                    source={{ uri: item.goodsImage }}
+                    style={styles.image}
+                    PlaceholderContent={<ActivityIndicator />}/>
+                </View>
+                <View style={styles.goodInfoText}>
+                    <View style={styles.goodNameBox}>
+                        <Text style={styles.goodName} numberOfLines={2}>{item.goodsName}</Text>
+                        <Icon name='delete' size={20} color="#ccc"/>
+                    </View>
+                    <Text style={styles.oldPrice}>￥{item.goodsOldPrice}</Text>
+                    <View style={styles.priceNum}>
+                        <Text style={styles.newPrice}>￥{item.goodsNewPrice}</Text>
+                        <View style={styles.goodNumChange}>
+                        <TouchableOpacity style={styles.button} onPress={this.onPress}>
+                            <Icon name='minus' size={12} color="#fff"/>
+                        </TouchableOpacity>
+                        <Text style={styles.goodNum}>0</Text>
+                        <TouchableOpacity style={styles.button} onPress={this.onPress}>
+                            <Icon name='plus' size={12} color="#fff"/>
+                        </TouchableOpacity>
                         </View>
                     </View>
                 </View>
-                ))
-            }
+            </View>
         </View>
     )
+    jump = () => {
+        const { navigate } = this.props.navigation;
+        navigate('GoodsDetails');
+    }
+
     render() {
+        const { allChecked } = this.state
         return (
             <View style={styles.carContain}>
                 <Text style={styles.pageTitle}>购物车</Text>
@@ -156,11 +123,19 @@ class Car extends React.Component {
                     data={this.state.list}
                     renderItem={this.renderItem}/>
                 <View style={styles.bottomBtn}>
+                    <View style={styles.checkedAll}>
+                        <CheckBox
+                            checkedColor="#000"
+                            checked={allChecked}
+                            onIconPress={() => this.checkStore(allChecked)}
+                            containerStyle={styles.checkC}/>
+                        <Text>全选</Text>
+                    </View>
                     <View style={styles.totalBox}>
                         <Text style={styles.totalText}>合计金额：</Text>
-                        <Text style={styles.totalPrice}>￥666.00</Text>
+                        <Text style={styles.totalPrice}>￥{this.totalPrice()}</Text>
+                        <Text style={styles.buyBtn} onPress={this.jump}>结算（22）</Text>
                     </View>
-                    <Text style={styles.buyBtn}>结算（22）</Text>
                 </View>
             </View>
         );
@@ -175,9 +150,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         paddingVertical: 5,
         textAlign: 'center',
-    },
-    carBox: {
-        marginBottom: 100,
     },
     storeName: {
         flexDirection: 'row',
@@ -249,8 +221,6 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
     bottomBtn: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
         position: 'absolute',
         bottom: 0,
         flexDirection: 'row',
@@ -258,8 +228,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between',
     },
+    checkedAll: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     totalBox: {
         flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
     },
     totalText: {
         fontSize: 14,
@@ -270,12 +247,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'red',
         fontWeight: 'bold',
+        paddingRight: 20,
     },
     buyBtn: {
-        paddingVertical: 10,
+        paddingVertical: 22,
         paddingHorizontal: 20,
-        borderRadius: 5,
         backgroundColor: 'red',
+        fontWeight: 'bold',
         color: '#fff',
     }
 })

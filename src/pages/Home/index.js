@@ -91,8 +91,14 @@ class Home extends React.Component {
                     <View style={styles.navBarItem}><Icon name='yelp' size={30} color="#000"/></View>
                     <View style={styles.navBarItem}><Icon name='sina-weibo' size={30} color="#000"/></View>
                 </View>
-                <LimitTime/>
-                <GoodsList/>
+                <LimitTime goDetail={(val) => {
+                    const { navigate } = this.props.navigation;
+                    navigate('GoodsDetails');
+                }}/>
+                <GoodsList goDetail={(val) => {
+                    const { navigate } = this.props.navigation;
+                    navigate('GoodsDetails');
+                }}/>
             </Animated.ScrollView>
         );
     }

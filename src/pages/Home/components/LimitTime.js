@@ -4,6 +4,7 @@ import {
     View,
     ScrollView,
     ActivityIndicator,
+    TouchableOpacity,
   } from 'react-native';
 
 import { Image, Text } from 'react-native-elements';
@@ -78,18 +79,25 @@ class LimitTime extends React.Component {
                     {
                         this.state.goodsList.map(item => {
                             return (
-                                <View key={item.goodsId} style={styles.card}>
-                                    <View style={styles.imgBox}>
-                                        <Image source={{ uri: item.goodsImage }}
-                                            PlaceholderContent={<ActivityIndicator />}
-                                            style={styles.cardImg}/>
+                                <TouchableOpacity
+                                    key={item.goodsId}
+                                    activeOpacity={0.8}
+                                    onPress={() => {
+                                        this.props.goDetail(1)
+                                    }}>
+                                    <View style={styles.card}>
+                                        <View style={styles.imgBox}>
+                                            <Image source={{ uri: item.goodsImage }}
+                                                PlaceholderContent={<ActivityIndicator />}
+                                                style={styles.cardImg}/>
+                                        </View>
+                                        <Text style={styles.cardName} numberOfLines={2}>{item.goodsName}</Text>
+                                        <View style={styles.cardPrice}>
+                                            <Text style={styles.oldPrice}>￥{item.goodsOldPrice}</Text>
+                                            <Text style={styles.newPrice}>￥{item.goodsNewPrice}</Text>
+                                        </View>
                                     </View>
-                                    <Text style={styles.cardName} numberOfLines={2}>{item.goodsName}</Text>
-                                    <View style={styles.cardPrice}>
-                                        <Text style={styles.oldPrice}>￥{item.goodsOldPrice}</Text>
-                                        <Text style={styles.newPrice}>￥{item.goodsNewPrice}</Text>
-                                    </View>
-                                </View>
+                                </TouchableOpacity>
                             )
                         })
                     }
