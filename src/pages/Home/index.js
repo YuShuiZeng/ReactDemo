@@ -63,6 +63,7 @@ class Home extends React.Component {
                     <Text style={styles.userName}>header</Text>
                     <Avatar
                         rounded
+                        onPress={() => {this.props.navigation.openDrawer()}}
                         size="medium"
                         source={{
                             uri:

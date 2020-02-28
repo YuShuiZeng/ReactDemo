@@ -1,119 +1,141 @@
 import React from 'react';
+import Swiper from 'react-native-swiper';
 import {
     StyleSheet,
-    FlatList,
     View,
     Text,
+    ActivityIndicator,
+    ScrollView,
+    Dimensions,
   } from 'react-native';
-import { ListItem, Avatar, Badge } from 'react-native-elements'
+import { Badge, Image } from 'react-native-elements'
   
-
+const { width } = Dimensions.get('window');
+const renderPagination = (index, total, context) => {
+  return (
+    <View style={styles.paginationStyle}>
+      <Text style={{ color: 'grey' }}>
+        <Text style={styles.paginationText}>{index + 1}</Text>/{total}
+      </Text>
+    </View>
+  )
+}
 class GoodsDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            list: [
-                {
-                  name: 'Amy Farha',
-                  value: 0,
-                  avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-                  subtitle: 'Vice President'
-                },
-                {
-                  name: 'Chris Jackson',
-                  value: 3,
-                  avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-                  subtitle: 'Vice Chairman'
-                },
-            ]
+            details: {
+              goodsId: '1',
+              goodsName: 'EURO DB几何个性镭射百搭女士包包',
+              goodsImage: 'https://image.sudian178.com/sd/goodsRealImg/20191205161734161169.jpg',
+              goodsOldPrice: 332.00,
+              goodsNewPrice: 33.00,
+              goodsTag:[
+                  '限时抢购'
+              ],
+            },
         }
     }
     static navigationOptions = {
         title: '商品详情',
     };
-    keyExtractor = (item, index) => index.toString()
+    jump = () => {}
 
-    renderItem = ({ item }) => (
-        <ListItem
-            title={
-              <View style={styles.listTitle}>
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.date}>昨天</Text>
-              </View>
-            }
-            subtitle={
-              <Text numberOfLines={1}>{item.subtitle}</Text>
-            }
-            containerStyle={styles.listC}
-            contentContainerStyle={styles.rightC}
-            leftElement={
-              <View>
-                <Avatar rounded source={{ uri: item.avatar_url }} size="medium"/>
-                {
-                  item.value > 0 ? <Badge
-                    value={item.value}
-                    badgeStyle={{ backgroundColor: 'red'}}
-                    textStyle={{ color: '#fff'}}
-                    containerStyle={styles.pointC}
-                   /> : <></>
-                }
-                
-              </View>
-            }
-            // bottomDivider
-        />
-    )
     render() {
         return (
-          <View >
-            <Text style={styles.pageTitle}>消息</Text>
-            <FlatList
-                keyExtractor={this.keyExtractor}
-                data={this.state.list}
-                renderItem={this.renderItem}/>
+          <View style={styles.box}>
+            <ScrollView style={styles.scrollBox}>
+              <View style={styles.imgBox}>
+                  <Image source={{ uri: this.state.details.goodsImage }}
+                    PlaceholderContent={<ActivityIndicator />}
+                    style={styles.cardImg}/>
+              </View>
+              <View style={styles.priceInfo}>
+                <View style={styles.price}>
+                  <Text style={styles.priceNew}>￥787</Text>
+                  <Text style={styles.priceOld}>￥909</Text>
+                </View>
+                <Text style={styles.sellDone}>已售888</Text>
+              </View>
+            </ScrollView>
+            {/* <Text>{this.state.details.goodsName}</Text> */}
+            <View style={styles.bottomBtn}>
+              <View style={styles.btnLeft}>
+                <Text style={styles.totalText}></Text>
+              </View>
+              <View style={styles.btnRight}>
+                <Text style={styles.addCar}>加入购物车</Text>
+                <Text style={styles.buyNow} onPress={this.jump}>立即购买</Text>
+              </View>
+            </View>
           </View>
         );
     }
 }
 const styles = StyleSheet.create({
-  pageTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    paddingVertical: 5,
-    textAlign: 'center',
+  box: {
+    flex: 1,
   },
-  listC: {
-    paddingLeft: 20,
-    paddingRight: 0,
-    paddingVertical: 0,
+  scrollBox: {
+    marginBottom: 50,
   },
-  listTitle: {
+  imgBox: {
+    overflow: 'hidden',
+  },
+  cardImg: {
+    width: width,
+    height: width,
+  },
+  priceInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  pointC: {
-    position: 'absolute',
-    top: -2,
-    left: 40,
-  },
-  rightC: {
-    height: 80,
+    paddingHorizontal: 10,
     paddingVertical: 15,
-    paddingRight: 20,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f1f1'
+    alignItems: 'center',
   },
-  name: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#333',
+  price: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
-  date: {
-    fontSize: 12,
+  sellDone: {
+    fontSize: 14,
     color: '#ccc',
+  },
+  priceOld: {
+    fontSize: 14,
+    color: '#ccc',
+    textDecorationLine: 'line-through',
+  },
+  priceNew: {
+    fontSize: 18,
+    color: 'red',
+  },
+  bottomBtn: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'pink',
+    justifyContent: 'space-between',
+  },
+  btnLeft: {
+    flex: 1,
+    // backgroundColor: 'yellow',
+  },
+  btnRight: {
+    flexDirection: 'row',
+  },
+  addCar: {
+    backgroundColor: '#000',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    color: '#fff',
+  },
+  buyNow: {
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: 'red',
+    color: '#fff',
   }
 })
 

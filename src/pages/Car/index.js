@@ -144,6 +144,7 @@ class Car extends React.Component {
 const styles = StyleSheet.create({
     carContain: {
         flex: 1,
+        // backgroundColor: 'green',
     },
     pageTitle: {
         fontSize: 18,

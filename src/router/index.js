@@ -4,12 +4,15 @@ import { createAppContainer } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Entypo';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createStackNavigator } from 'react-navigation-stack';
+import { createDrawerNavigator } from 'react-navigation-drawer';
+// import { DrawerItems } from 'react-navigation-drawer';
 
 import Car from '../pages/Car';
 import Home from '../pages/Home';
 import Message from '../pages/Message';
 import Setting from '../pages/Setting';
 import GoodsDetails from '../pages/GoodsDetails';
+import DrawMenu from '../components/DrawMenu';
 
 class IconWithBadge extends React.Component {
     render() {
@@ -86,12 +89,6 @@ const TabNavigator = createBottomTabNavigator({
       tabBarIcon: ({ focused, tintColor }) =>
         getTabBarIcon(navigation, focused, tintColor),
     }),
-    GoodsDetails: {
-        screen: GoodsDetails,
-        navigationOptions: {
-            title: '商品详情'
-        }
-    },
     tabBarOptions: {
       activeTintColor: 'tomato',
       inactiveTintColor: 'gray',
@@ -110,4 +107,13 @@ const appStack = createStackNavigator({
     },
     initialRouteName: 'bottomTabNavigator'
 })
-export default createAppContainer(appStack);
+
+const drawMenu = createDrawerNavigator({
+    StackNavigator: {
+        screen: appStack,
+    },
+},{
+    drawerPosition: 'right',
+    contentComponent: DrawMenu,
+})
+export default createAppContainer(drawMenu);
